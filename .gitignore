@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# 환경설정/가상환경
+.env
+.venv
+venv/
+env/
+ENV/
+
+# OS별 임시파일
+.DS_Store
+Thumbs.db
+
+# IDE/에디터
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 로그/임시파일
+*.log
+*.tmp
+*.bak
+
+# 기타
+*.sqlite3
+*.db
+
+# 빌드/배포
+build/
+dist/
+*.egg-info/
+
+# 파이썬 바이트코드
+*.pyc
+
+# 환경별 캐시
+.cache/
+__pypackages__/
+
+# 기타 프로젝트에서 생성되는 불필요한 파일
+config.cpython-*.pyc
+*.orig 
