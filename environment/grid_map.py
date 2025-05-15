@@ -57,8 +57,8 @@ class GridMap:
             start_col = np.random.randint(min_coord, max_coord + 1)
 
             # 시작점으로부터의 랜덤 오프셋 (dr, dc) 생성
-            # dr, dc는 {-3, -2, 2, 3} 범위 내에서 선택 => 대각선 오프셋만 생성
-            possible_offsets = [-3, -2, 2, 3]
+            # dr, dc는 {-2, -1, 1, 2} 범위 내에서 선택 => 대각선 오프셋만 생성
+            possible_offsets = [-2, -1, 1, 2]
             dr = np.random.choice(possible_offsets)
             dc = np.random.choice(possible_offsets)
 
