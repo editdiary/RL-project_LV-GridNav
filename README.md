@@ -12,8 +12,7 @@ LV-GridNav는 언어 정보와 시각 정보를 결합하여 비정형 그리드
 - 다양한 지형 특성:
   - 일반 경로
   - 공사중인 경로 (이동 가능하지만 상대적으로 높은 패널티)
-  - 지름길
-  - 이동 불가능한 영역
+  - 벽 (이동 불가능한 영역)
 
 ### 에이전트 특성
 - 시각적 인식: CNN 모델을 통해 (m x m) 크기의 주변 환경 인식
@@ -32,15 +31,16 @@ LV-GridNav는 언어 정보와 시각 정보를 결합하여 비정형 그리드
 
 ## 기술 스택
 - Python
-- PyTorch
-- OpenCV
-- Gymnasium (강화학습 환경을 구현하고 테스트하기 위한 표준화된 라이브러리)
 - NumPy
+- Matplotlib
+- Gymnasium (강화학습 환경을 구현하고 테스트하기 위한 표준화된 라이브러리)
+- OpenCV
+- PyTorch
 
 ## 프로젝트 구조
 ```
 LV-GridNav/
-├── environment/         # 환경 관련 코드
+├── environment/        # 환경 관련 코드
 ├── agent/              # 에이전트 관련 코드
 ├── models/             # CV 및 강화학습 모델
 ├── scenarios/          # 시나리오 구현
