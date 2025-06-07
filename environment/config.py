@@ -16,10 +16,6 @@ class ElementConfig:
         (2, 1),  # 2x1
         (1, 2),  # 1x2
         (2, 2),  # 2x2
-        (1, 3),  # 1x3
-        (3, 1),  # 3x1
-        (2, 3),  # 2x3
-        (3, 2),  # 3x2
     ]
     
     # 공사중인 경로의 크기 정의
@@ -27,6 +23,16 @@ class ElementConfig:
         (1, 1),  # 1x1
         (1, 2),  # 1x2
         (2, 1),  # 2x1
-        (1, 3),  # 1x3
-        (3, 1),  # 3x1
     ]
+
+class RewardConfig:
+    """보상 관련 설정"""
+    # 기본 보상
+    GOAL_REWARD = 100.0          # 목표 도달
+    WALL_PENALTY = -10.0         # 벽 충돌
+    CONSTRUCTION_PENALTY = -3.0  # 공사중인 경로 통과
+    STEP_PENALTY = -0.5          # 한 스텝당 패널티
+    
+    # 추가 보상
+    GOAL_PROXIMITY_REWARD = 1.0  # 목표에 가까워질 때마다
+    VISITED_PENALTY = -0.5       # 이미 방문한 타일 재방문시

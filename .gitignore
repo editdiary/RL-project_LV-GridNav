@@ -50,3 +50,6 @@ __pypackages__/
 # 기타 프로젝트에서 생성되는 불필요한 파일
 config.cpython-*.pyc
 *.orig 
+
+# 수업 실습 자료
+lecture/

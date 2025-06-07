@@ -49,6 +49,10 @@ class SingleGoalScenario(Scenario):
         self.seed = seed if seed is not None else np.random.randint(0, 10000)
         self.rng = np.random.RandomState(self.seed)
 
+    @property
+    def scenario_type(self) -> str:
+        return "시나리오1"
+
     def generate_goals(self) -> None:
         attempts = 0
         max_attempts = 100  # 무한 루프 방지
@@ -73,16 +77,20 @@ class SingleGoalScenario(Scenario):
 class NearestGoalScenario(Scenario):
     """시나리오2: 가장 가까운 목표 시나리오"""
     def __init__(self, grid_map: GridMap, seed: int = None, agent_pos: Tuple[int, int] = None):
-        super().__init__(grid_map=grid_map, num_goals=5, agent_pos=agent_pos)
+        super().__init__(grid_map=grid_map, num_goals=3, agent_pos=agent_pos)
         self.seed = seed if seed is not None else np.random.randint(0, 10000)
         self.rng = np.random.RandomState(self.seed)
+
+    @property
+    def scenario_type(self) -> str:
+        return "시나리오2"
 
     def generate_goals(self) -> None:
         """가장 가까운 목표를 찾기 위한 목표 지점들을 생성"""
         self.goals = []
         attempts = 0
         max_attempts = self.num_goals * 100  # 무한 루프 방지
-        min_distance = 5  # 목표 지점들 사이의 최소 거리
+        min_distance = 3  # 목표 지점들 사이의 최소 거리
         
         while len(self.goals) < self.num_goals and attempts < max_attempts:
             x = self.rng.randint(self.grid_map.padding, 
@@ -108,12 +116,16 @@ class MultipleGoalsScenario(Scenario):
         self.seed = seed if seed is not None else np.random.randint(0, 10000)
         self.rng = np.random.RandomState(self.seed)
 
+    @property
+    def scenario_type(self) -> str:
+        return "시나리오3"
+
     def generate_goals(self) -> None:
         """모든 목표를 방문해야 하는 목표 지점들을 생성합니다."""
         self.goals = []
         attempts = 0
         max_attempts = self.num_goals * 100
-        min_distance = 5  # 목표 지점들 사이의 최소 거리
+        min_distance = 3  # 목표 지점들 사이의 최소 거리
         
         while len(self.goals) < self.num_goals and attempts < max_attempts:
             x = self.rng.randint(self.grid_map.padding, 
