@@ -3,6 +3,7 @@ from typing import Tuple, List, Dict
 from environment import GridMap
 from environment.config import RewardConfig
 from agent import Action
+from visualize.visualizer import Visualizer
 
 class PolicyIteration:
     """정책 반복 알고리즘을 구현한 클래스"""
@@ -28,6 +29,9 @@ class PolicyIteration:
         # 목표 지점의 가치를 최대로 설정
         for goal in goals:
             self.V[goal] = RewardConfig.GOAL_REWARD
+        
+        # 시각화 도구 초기화
+        self.visualizer = Visualizer(grid_map)
     
     def get_next_state(self, state: Tuple[int, int], action: Action) -> Tuple[int, int]:
         """주어진 상태와 행동에 따른 다음 상태를 반환합니다."""
@@ -55,21 +59,18 @@ class PolicyIteration:
     def get_reward(self, state: Tuple[int, int]) -> float:
         """주어진 상태에 대한 보상을 반환합니다."""
         x, y = state
-        reward = RewardConfig.STEP_PENALTY
-        
-        # 목표 도달
-        if state in self.goals:
-            reward += RewardConfig.GOAL_REWARD
-        # 벽이나 공사중인 경로
-        elif self.grid_map.is_wall(x, y):
-            reward += RewardConfig.WALL_PENALTY
-        elif self.grid_map.is_construction(x, y):
-            reward += RewardConfig.CONSTRUCTION_PENALTY
-            
-        return reward
+        return self.grid_map.get_reward(x, y, state in self.goals)
     
     def policy_evaluation(self):
-        """정책 평가 단계"""
+        """정책 평가 단계
+        
+        벨만 기대 방정식(Bellman Expectation Equation)을 사용:
+        V^π(s) = Σ_a π(a|s) * [R(s,a) + γ * V^π(s')]
+        - π(a|s): 현재 정책에서 상태 s에서 행동 a를 선택할 확률
+        - R(s,a): 상태 s에서 행동 a를 취했을 때의 보상
+        - γ: 할인율
+        - V^π(s'): 다음 상태 s'의 가치
+        """
         while True:
             delta = 0
             # 모든 상태에 대해 반복
@@ -83,6 +84,8 @@ class PolicyIteration:
                     for action in Action:
                         next_state = self.get_next_state(state, action)
                         next_x, next_y = next_state
+                        # 벨만 기대 방정식 적용
+                        # π(a|s) * [R(s,a) + γ * V^π(s')]
                         value += self.policy[x, y, action.value] * (
                             self.get_reward(next_state) + 
                             self.gamma * self.V[next_x, next_y]
@@ -95,7 +98,15 @@ class PolicyIteration:
                 break
     
     def policy_improvement(self) -> bool:
-        """정책 개선 단계"""
+        """정책 개선 단계
+        
+        벨만 최적 방정식(Bellman Optimality Equation)을 사용:
+        π*(s) = argmax_a [R(s,a) + γ * V^π(s')]
+        - π*(s): 최적 정책에서 상태 s에서 선택할 행동
+        - R(s,a): 상태 s에서 행동 a를 취했을 때의 보상
+        - γ: 할인율
+        - V^π(s'): 다음 상태 s'의 가치
+        """
         policy_stable = True
         
         for x in range(self.grid_map.padded_size):
@@ -108,28 +119,34 @@ class PolicyIteration:
                 for action in Action:
                     next_state = self.get_next_state(state, action)
                     next_x, next_y = next_state
+                    # 벨만 최적 방정식 적용
+                    # R(s,a) + γ * V^π(s')
                     action_values[action.value] = (
                         self.get_reward(next_state) + 
                         self.gamma * self.V[next_x, next_y]
                     )
-                
-                # 최적 행동 선택
+
+                # 최적 행동 선택 (argmax)
                 best_action = np.argmax(action_values)
                 self.policy[x, y] = np.zeros(len(Action))
-                self.policy[x, y, best_action] = 1
-                
+                self.policy[x, y, best_action] = 1  # 최적 행동에 확률 1 할당
+
                 if old_action != best_action:
                     policy_stable = False
         
         return policy_stable
     
-    def train(self, max_iterations: int = 1000):
+    def train(self, max_iterations: int = 100, visualize: bool = True):
         """정책 반복 알고리즘 실행"""
         for i in range(max_iterations):
             self.policy_evaluation()
             if self.policy_improvement():
                 print(f"정책이 {i+1}번째 반복에서 수렴했습니다.")
                 break
+            
+            # 시각화
+            if visualize:
+                self.visualizer.render(V=self.V, policy=self.policy)
     
     def get_action(self, state: Tuple[int, int]) -> Action:
         """주어진 상태에서 최적 행동을 반환합니다."""

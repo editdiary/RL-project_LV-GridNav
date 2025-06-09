@@ -2,9 +2,9 @@ from typing import Dict, List, Tuple
 
 class MapConfig:
     """맵 관련 기본 설정"""
-    DEFAULT_SIZE: int = 11
+    DEFAULT_SIZE: int = 7
     DEFAULT_PADDING: int = 2
-    DEFAULT_SEED: int = 42
+    DEFAULT_SEED: int = 40
     MAX_ATTEMPTS_MULTIPLIER: int = 100
 
 class ElementConfig:
@@ -28,11 +28,11 @@ class ElementConfig:
 class RewardConfig:
     """보상 관련 설정"""
     # 기본 보상
-    GOAL_REWARD = 100.0          # 목표 도달
-    WALL_PENALTY = -10.0         # 벽 충돌
-    CONSTRUCTION_PENALTY = -3.0  # 공사중인 경로 통과
-    STEP_PENALTY = -0.5          # 한 스텝당 패널티
+    GOAL_REWARD = 10.0          # 목표 도달
+    WALL_PENALTY = -5.0         # 벽 충돌
+    CONSTRUCTION_PENALTY = -2.0  # 공사중인 경로 통과
+    STEP_PENALTY = -1.0          # 한 스텝당 패널티
     
     # 추가 보상
-    GOAL_PROXIMITY_REWARD = 1.0  # 목표에 가까워질 때마다
-    VISITED_PENALTY = -0.5       # 이미 방문한 타일 재방문시
+    GOAL_PROXIMITY_REWARD = 0.5  # 목표에 가까워질 때마다
+    VISITED_PENALTY = -0.2       # 이미 방문한 타일 재방문시

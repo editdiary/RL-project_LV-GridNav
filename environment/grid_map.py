@@ -1,7 +1,7 @@
 import numpy as np
 from enum import Enum
 from typing import Dict, Tuple, List
-from .config import MapConfig, ElementConfig
+from .config import MapConfig, ElementConfig, RewardConfig
 
 
 class Tile:
@@ -15,6 +15,7 @@ class TileType(Enum):
     EMPTY = "empty"
     WALL = "wall"
     CONSTRUCTION = "construction"
+    GOAL = "goal"
 
 
 class GridMap:
@@ -25,9 +26,9 @@ class GridMap:
         2D 그리드 환경을 표현하는 클래스
         
         Args:
-            size (int): 실제 맵의 크기 (기본값: 11)
+            size (int): 실제 맵의 크기 (기본값: 7)
             padding (int): 경계에 추가할 padding의 크기 (기본값: 2)
-            seed (int): 랜덤 시드 (기본값: 42)
+            seed (int): 랜덤 시드 (기본값: 40)
         """
         self.size = size
         self.padding = padding
@@ -125,6 +126,30 @@ class GridMap:
     def is_construction(self, x: int, y: int) -> bool:
         """특정 위치가 공사중인 경로인지 확인합니다."""
         return self.get_tile_type(x, y) == TileType.CONSTRUCTION
+
+    def get_reward(self, x: int, y: int, is_goal: bool = False) -> float:
+        """주어진 위치의 보상을 반환합니다.
+        
+        Args:
+            x: x 좌표
+            y: y 좌표
+            is_goal: 해당 위치가 목표 지점인지 여부
+            
+        Returns:
+            float: 해당 위치의 보상 값
+        """
+        reward = RewardConfig.STEP_PENALTY
+        
+        # 목표 도달
+        if is_goal:
+            reward += RewardConfig.GOAL_REWARD
+        # 벽이나 공사중인 경로
+        elif self.is_wall(x, y):
+            reward += RewardConfig.WALL_PENALTY
+        elif self.is_construction(x, y):
+            reward += RewardConfig.CONSTRUCTION_PENALTY
+            
+        return reward
 
     def _is_area_empty(self, start_x: int, start_y: int, width: int, height: int) -> bool:
         """특정 영역이 비어있는지 확인합니다."""
