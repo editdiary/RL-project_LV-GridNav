@@ -57,6 +57,7 @@ class GridWorld:
         # 재방문 영역 초기화
         self.visited_states = defaultdict(int)
         self.visited_states[self.grid_map.agent_pos] = 1    # 초기 상태 방문 횟수 1로 설정
+        self.visited_goals = set()      # 시나리오3을 위한 방문한 목표 지점 기록
 
         # 행동 가능 영역
         self.action_space = [Action.UP, Action.RIGHT, Action.DOWN, Action.LEFT]
@@ -122,14 +123,19 @@ class GridWorld:
 
         # 3. 중복 방문 패널티 (방문 횟수에 따라 증가)
         visit_count = self.visited_states[next_state]
-        # 이미 방문한 경우 방문 횟수의 제곱만큼 패널티
+        # 이미 방문한 경우 방문 횟수의 지수 함수만큼 패널티
         if visit_count > 1:
             duplicate_penalty = RewardConfig.VISITED_PENALTY * (2 ** (visit_count - 2))
             reward += duplicate_penalty
 
         # 4. 목표 도달 보상
-        if next_state in self.goals:
-            reward += RewardConfig.GOAL_REWARD
+        if self.scenario_type == "시나리오3":
+            if next_state in self.goals and next_state not in self.visited_goals:
+                reward += RewardConfig.GOAL_REWARD
+                self.visited_goals.add(next_state)
+        else:
+            if next_state in self.goals:
+                reward += RewardConfig.GOAL_REWARD
 
         return reward
         
@@ -143,7 +149,11 @@ class GridWorld:
         state = self.agent_pos
         next_state = self.next_state(state, action)
         reward = self.reward(state, action, next_state)
-        done = (next_state in self.goals)
+        
+        if self.scenario_type == "시나리오3":
+            done = len(self.visited_goals) == len(self.goals)
+        else:
+            done = next_state in self.goals
 
         self.agent_pos = next_state
         self.visited_states[next_state] += 1    # 방문 횟수 증가
@@ -151,11 +161,10 @@ class GridWorld:
         return next_state, reward, done
         
     def reset(self) -> Tuple[int, int]:
-        """
-        Agent를 초기 위치로 이동시킵니다.
-        """
+        """환경을 초기화하고 초기 상태를 반환합니다."""
         self.agent_pos = self.grid_map.agent_pos
         self.visited_states.clear()
         self.visited_states[self.agent_pos] = 1
+        self.visited_goals.clear()
 
         return self.agent_pos
