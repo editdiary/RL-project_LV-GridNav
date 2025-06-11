@@ -1,3 +1,3 @@
-from .agent import Agent, Action
+from .agent import QLearningAgent
 
-__all__ = ['Agent', 'Action']
+__all__ = ['QLearningAgent']

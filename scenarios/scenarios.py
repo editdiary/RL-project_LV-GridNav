@@ -76,7 +76,7 @@ class SingleGoalScenario(Scenario):
         raise RuntimeError("비어있는 목표 지점을 찾을 수 없습니다.")
     
 class NearestGoalScenario(Scenario):
-    """시나리오2: 가장 가까운 목표 시나리오"""
+    """시나리오2: 여러 목표 지점 중 가장 가까운 목표 시나리오"""
     def __init__(self, grid_map: GridMap, seed: int = None, agent_pos: Tuple[int, int] = None):
         super().__init__(grid_map=grid_map, num_goals=3, agent_pos=agent_pos)
         self.seed = seed if seed is not None else np.random.randint(0, 10000)
@@ -178,6 +178,6 @@ class ScenarioFactory:
         if scenario_type == ScenarioType.SCENARIO_1:
             return SingleGoalScenario(grid_map, base_seed, agent_pos)   # 시나리오1은 항상 목표 지점 1개
         elif scenario_type == ScenarioType.SCENARIO_2:
-            return NearestGoalScenario(grid_map, base_seed + 1, agent_pos)  # 시나리오2는 목표 지점 기본값 5개
+            return NearestGoalScenario(grid_map, base_seed + 1, agent_pos)  # 시나리오2는 목표 지점 기본값 3개
         elif scenario_type == ScenarioType.SCENARIO_3:
             return MultipleGoalsScenario(grid_map, base_seed + 2, agent_pos)  # 시나리오3는 목표 지점 기본값 3개

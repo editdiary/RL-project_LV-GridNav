@@ -127,30 +127,6 @@ class GridMap:
         """특정 위치가 공사중인 경로인지 확인합니다."""
         return self.get_tile_type(x, y) == TileType.CONSTRUCTION
 
-    def get_reward(self, x: int, y: int, is_goal: bool = False) -> float:
-        """주어진 위치의 보상을 반환합니다.
-        
-        Args:
-            x: x 좌표
-            y: y 좌표
-            is_goal: 해당 위치가 목표 지점인지 여부
-            
-        Returns:
-            float: 해당 위치의 보상 값
-        """
-        reward = RewardConfig.STEP_PENALTY
-        
-        # 목표 도달
-        if is_goal:
-            reward += RewardConfig.GOAL_REWARD
-        # 벽이나 공사중인 경로
-        elif self.is_wall(x, y):
-            reward += RewardConfig.WALL_PENALTY
-        elif self.is_construction(x, y):
-            reward += RewardConfig.CONSTRUCTION_PENALTY
-            
-        return reward
-
     def _is_area_empty(self, start_x: int, start_y: int, width: int, height: int) -> bool:
         """특정 영역이 비어있는지 확인합니다."""
         for x in range(start_x, start_x + width):

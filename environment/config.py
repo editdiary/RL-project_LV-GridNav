@@ -35,4 +35,4 @@ class RewardConfig:
     
     # 추가 보상
     GOAL_PROXIMITY_REWARD = 0.5  # 목표에 가까워질 때마다
-    VISITED_PENALTY = -0.2       # 이미 방문한 타일 재방문시
+    VISITED_PENALTY = -1.0       # 이미 방문한 타일 재방문시

@@ -1,3 +1,4 @@
-from .grid_map import GridMap, TileType
+from .grid_map import GridMap
+from .gridworld import GridWorld, Action
 
-__all__ = ['GridMap', 'TileType']
+__all__ = ['GridMap', 'GridWorld', 'Action']
