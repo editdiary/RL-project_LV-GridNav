@@ -28,11 +28,11 @@ class ElementConfig:
 class RewardConfig:
     """보상 관련 설정"""
     # 기본 보상
-    GOAL_REWARD = 50.0          # 목표 도달
-    WALL_PENALTY = -10.0         # 벽 충돌
-    CONSTRUCTION_PENALTY = -2.0  # 공사중인 경로 통과
-    STEP_PENALTY = -1.0          # 한 스텝당 패널티
+    GOAL_REWARD = 3.0          # 목표 도달
+    WALL_PENALTY = -5.0         # 벽 충돌
+    CONSTRUCTION_PENALTY = -0.3  # 공사중인 경로 통과
+    STEP_PENALTY = -0.1          # 한 스텝당 패널티
     
     # 추가 보상
-    GOAL_PROXIMITY_REWARD = 0.5  # 목표에 가까워질 때마다
-    VISITED_PENALTY = -1.0       # 이미 방문한 타일 재방문시
+    GOAL_PROXIMITY_REWARD = 0.1  # 목표에 가까워질 때마다
+    VISITED_PENALTY = -0.2       # 이미 방문한 타일 재방문시

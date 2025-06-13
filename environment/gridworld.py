@@ -64,19 +64,15 @@ class GridWorld:
 
     def _get_reward(self, x: int, y: int) -> float:
         """주어진 위치의 보상을 반환합니다."""
-        # 기본 보상 초기화
-        reward = 0
-        
         # 목표 도달
         if self.grid_map.get_tile_type(x, y) == TileType.GOAL:
-            reward = RewardConfig.GOAL_REWARD
+            return 0      # 목표 보상은 reward 메서드에서 처리
         # 벽이나 공사중인 경로
         elif self.grid_map.is_wall(x, y):
-            reward = RewardConfig.WALL_PENALTY
+            return RewardConfig.WALL_PENALTY
         elif self.grid_map.is_construction(x, y):
-            reward = RewardConfig.CONSTRUCTION_PENALTY
-            
-        return reward
+            return RewardConfig.CONSTRUCTION_PENALTY
+        return 0
 
     @property
     def possible_actions(self) -> list:
@@ -121,21 +117,29 @@ class GridWorld:
         # 2. step penalty
         reward += RewardConfig.STEP_PENALTY
 
-        # 3. 중복 방문 패널티 (방문 횟수에 따라 증가)
+        # 3. 중복 방문 패널티 (방문 횟수에 따라 선형적으로 증가)
         visit_count = self.visited_states[next_state]
-        # 이미 방문한 경우 방문 횟수의 지수 함수만큼 패널티
         if visit_count > 1:
-            duplicate_penalty = RewardConfig.VISITED_PENALTY * (2 ** (visit_count - 2))
+            duplicate_penalty = RewardConfig.VISITED_PENALTY * visit_count
             reward += duplicate_penalty
 
         # 4. 목표 도달 보상
         if self.scenario_type == "시나리오3":
             if next_state in self.goals and next_state not in self.visited_goals:
-                reward += RewardConfig.GOAL_REWARD
+                # 방문한 목표 지점 수에 따라 보상 증가
+                visit_count = len(self.visited_goals)
+                reward += RewardConfig.GOAL_REWARD * (1.0 + visit_count * 0.5)
                 self.visited_goals.add(next_state)
+
+                # 모든 목표 지점을 방문했을 때 추가 보상
+                if len(self.visited_goals) == len(self.goals):
+                    reward += RewardConfig.GOAL_REWARD * 1.5
         else:
             if next_state in self.goals:
                 reward += RewardConfig.GOAL_REWARD
+
+        # 보상 scaling
+        reward = reward / 10.0
 
         return reward
         
