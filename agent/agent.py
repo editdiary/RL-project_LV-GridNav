@@ -56,8 +56,8 @@ class DQNAgent:
         self.epsilon = 1.0          # 초기 epsilon 값
         self.epsilon_min = 0.01     # 최소 epsilon 값
         self.epsilon_decay = 0.992  # epsilon 감소 속도
-        self.buffer_size = 20000  # 경험 재생 버퍼 크기
-        self.batch_size = 64      # 미니배치 크기
+        self.buffer_size = 20000    # 경험 재생 버퍼 크기
+        self.batch_size = 64        # 미니배치 크기
         self.action_size = action_size
         self.state_size = state_size
         
