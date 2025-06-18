@@ -4,6 +4,32 @@
 LV-GridNav는 언어 정보와 시각 정보를 결합하여 비정형 그리드 환경에서 최적의 경로를 학습하는 강화학습 기반 내비게이션 시스템입니다. 이 프로젝트는 다양한 시나리오에서 에이전트가 목표 지점까지 효율적으로 이동하는 방법을 학습하는 것을 목표로 합니다.<br>
 본 프로젝트는 세종대학교 대학원 수업 `생명과학을 위한 머신러닝 응용 및 실습`의 미니 프로젝트로 수행되었습니다.
 
+## Project Presentation
+You can find our final project presentation slides [here](./docs/Language-Vision_GridNavigation_Presentation_20250618.pdf).
+
+## 프로젝트 구조
+```
+LV-GridNav/
+├── agent/             # 에이전트 관련 코드
+├── environment/       # 환경 관련 코드
+├── scenarios/         # 시나리오 구현
+├── utils/             # 유틸리티 함수
+└── visualize/         # 시각화 관련 코드
+```
+
+## 주요 라이브러리 버전
+```
+Python: 3.11
+NumPy: 2.1.2
+PyTorch: 2.5.0+cu121
+Matplotlib
+```
+
+각 라이브러리의 주요 용도:
+- NumPy: 수치 연산 및 배열 처리
+- Matplotlib: 학습 과정 및 결과 시각화
+- PyTorch: 딥러닝 모델 구현 및 학습
+
 ## 주요 기능
 
 ### 환경 구성
@@ -52,29 +78,6 @@ LV-GridNav는 언어 정보와 시각 정보를 결합하여 비정형 그리드
 - 목표 도달: +3.0 (GOAL_REWARD)
 - 중복 방문: 방문 횟수에 따라 선형적으로 증가하는 패널티
 - 모든 목표 방문 완료: 추가 보상
-
-## 주요 라이브러리 버전
-```
-Python: 3.11
-NumPy: 2.1.2
-PyTorch: 2.5.0+cu121
-Matplotlib
-```
-
-각 라이브러리의 주요 용도:
-- NumPy: 수치 연산 및 배열 처리
-- Matplotlib: 학습 과정 및 결과 시각화
-- PyTorch: 딥러닝 모델 구현 및 학습
-
-## 프로젝트 구조
-```
-LV-GridNav/
-├── agent/             # 에이전트 관련 코드
-├── environment/       # 환경 관련 코드
-├── scenarios/         # 시나리오 구현
-├── utils/             # 유틸리티 함수
-└── visualize/         # 시각화 관련 코드
-```
 
 ## 라이선스
 MIT License
