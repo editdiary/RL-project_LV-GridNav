@@ -5,7 +5,7 @@ LV-GridNav는 언어 정보와 시각 정보를 결합하여 비정형 그리드
 본 프로젝트는 세종대학교 대학원 수업 `생명과학을 위한 머신러닝 응용 및 실습`의 미니 프로젝트로 수행되었습니다.
 
 ## Project Presentation
-You can find our final project presentation slides [here](./docs/Language-Vision_GridNavigation_Presentation_20250618.pdf).
+You can find our final project presentation slides [here](./docs/LV-GridNav_Presentation_20250618.pdf).
 
 ## 프로젝트 구조
 ```
